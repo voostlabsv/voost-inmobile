@@ -947,9 +947,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   }
   bud.addEventListener('input', budget); budget();
 
-  /* -------- formulario: cada envío llega como correo "Nuevo lead interesado" --------
-     LEAD_TO: correo que recibe los leads (o el alias que da FormSubmit tras activarlo). */
-  const LEAD_TO = 'voost.lab@gmail.com';
+  /* -------- formulario: cada envío llega como correo "Nuevo lead interesado" (función /api/lead) -------- */
   let budTouched = false; bud.addEventListener('input', () => budTouched = true, { once: true });
   $('lead').addEventListener('submit', async e => {
     e.preventDefault();
@@ -959,22 +957,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     ok.hidden = false; ok.style.color = 'var(--glow)';
     if (!n) { ok.textContent = 'Escribe tu nombre para continuar.'; $('fName').focus(); return; }
     if (!ph && !mail) { ok.textContent = 'Déjanos un WhatsApp o un correo para contactarte.'; $('fPh').focus(); return; }
-    if ($('fHoney').value) return;
-    if (!LEAD_TO) { ok.textContent = 'El formulario se está configurando. Escríbenos por WhatsApp mientras tanto.'; return; }
-    const data = {
-      _subject: `Nuevo lead interesado · ${n}${v('fCo') ? ' · ' + v('fCo') : ''}`,
-      _template: 'table', _captcha: 'false',
-      'Nombre': n, 'Empresa o proyecto': v('fCo') || '—', 'Industria / negocio': v('fInd') || '—',
-      'Necesita': v('fNeed'), 'WhatsApp / teléfono': ph || '—', 'Correo': mail || '—',
-      'Presupuesto Meta Ads indicado': budTouched ? $('budOut').textContent + ' al mes' : 'No indicado',
-      'Página': location.href, 'Fecha': new Date().toLocaleString('es-SV')
-    };
-    if (mail) data._replyto = mail;
+    const data = { name: n, company: v('fCo'), industry: v('fInd'), need: v('fNeed'), phone: ph, email: mail,
+      budget: budTouched ? $('budOut').textContent + ' al mes' : 'No indicado', page: location.href,
+      date: new Date().toLocaleString('es-SV', { timeZone: 'America/El_Salvador' }), _honey: $('fHoney').value };
     btn.disabled = true; ok.style.color = 'var(--mute)'; ok.textContent = 'Enviando…';
     try {
-      const r = await fetch(`https://formsubmit.co/ajax/${LEAD_TO}`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+      const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
       const j = await r.json().catch(() => ({}));
-      if (!r.ok || j.success === 'false' || j.success === false) throw new Error(j.message || r.status);
+      if (!r.ok || !j.ok) throw new Error(j.error || r.status);
       ok.style.color = 'var(--free)'; ok.textContent = `Gracias, ${n}. Recibimos tus datos y te contactamos muy pronto.`;
       e.target.reset();
     } catch (err) {
