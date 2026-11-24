@@ -432,7 +432,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       <div class="beat tw" data-s="6">
         <span class="lab">06 · Landing interactiva</span>
         <h2 data-split>Explora <em>la torre.</em></h2>
-        <p class="fade">Recorre cada nivel. Toca uno para entrar. La terraza también se visita.</p>
+        <p class="fade">Recorre cada nivel. Toca uno para entrar. La terraza y el rooftop también se visitan.</p>
         <div class="legend fade"><span><i style="background:var(--free)"></i>Disponible</span><span><i style="background:var(--hold)"></i>Reservado</span><span><i style="background:var(--gone)"></i>Vendido</span><span><i style="background:var(--aqua)"></i>Terraza</span></div>
       </div>
     </div>
@@ -672,6 +672,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   const ROOF = 552, GROUND = 1176, FIRST = 3, COUNT = 18, X0 = 360, X1 = 850;
   const FH = (GROUND - ROOF) / COUNT;
   const TERR = { y0: 1176, y1: 1214, x0: 330, x1: 925 };
+  const AM = {
+    T: { ...TERR, tag: 'TERRAZA · PISCINA', small: 'TERRAZA', big: 'T', type: 'Terraza con piscina y solárium', area: '420 m²', btn: 'Ver terraza' },
+    R: { y0: 436, y1: 552, x0: 362, x1: 848, tag: 'ROOFTOP · PISCINA', small: 'ROOFTOP', big: 'R', type: 'Rooftop con piscina y vista al volcán', area: '380 m²', btn: 'Ver rooftop' }
+  };
   const TOWER_CX = 615, TOWER_CY = 850, TOWER_H = 820, TOWER_W = 640;
   const layer = $('layer'), band = $('band'), hits = $('hits'), ticks = $('ticks'), zoomer = $('zoomer');
 
@@ -699,7 +703,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   });
   { const b = document.createElement('button'); b.type = 'button'; b.className = 'hit'; px(b, TERR.x0, TERR.y0, TERR.x1, TERR.y1 + 6);
     b.setAttribute('aria-label', 'Terraza con piscina, ver recorrido'); bindHit(b, 'T'); hits.appendChild(b);
-    Object.assign($('terrDot').style, { left: (TERR.x0 + 60) + 'px', top: ((TERR.y0 + TERR.y1) / 2) + 'px' }); }
+    Object.assign($('terrDot').style, { left: (TERR.x0 + 60) + 'px', top: ((TERR.y0 + TERR.y1) / 2) + 'px' });
+    const r = document.createElement('button'); r.type = 'button'; r.className = 'hit'; px(r, AM.R.x0, AM.R.y0, AM.R.x1, AM.R.y1);
+    r.setAttribute('aria-label', 'Rooftop con piscina, ver recorrido'); bindHit(r, 'R'); hits.appendChild(r);
+    const d2 = $('terrDot').cloneNode(); d2.id = 'roofDot'; Object.assign(d2.style, { left: '505px', top: '470px' }); $('terrDot').after(d2); }
 
   let sel = 14;
   function bindHit(b, id){
@@ -710,14 +717,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   const money = n => '$' + n.toLocaleString('en-US');
   function select(id){
     const changed = id !== sel; sel = id; vp.classList.add('sel');
-    if (id === 'T') {
-      px(band, TERR.x0, TERR.y0, TERR.x1, TERR.y1); band.className = 'band terr';
-      $('cNum').innerHTML = '<small>TERRAZA</small>T'; $('cSt').className = 'st terr'; $('cSt').textContent = 'Amenidad';
-      $('cType').textContent = 'Terraza con piscina y solárium';
-      $('cA').textContent = '420 m²'; $('cB').textContent = '—'; $('cBa').textContent = '—';
+    if (AM[id]) {
+      const a = AM[id];
+      px(band, a.x0, a.y0, a.x1, a.y1); band.className = 'band terr';
+      $('cNum').innerHTML = `<small>${a.small}</small>${a.big}`; $('cSt').className = 'st terr'; $('cSt').textContent = 'Amenidad';
+      $('cType').textContent = a.type;
+      $('cA').textContent = a.area; $('cB').textContent = '—'; $('cBa').textContent = '—';
       $('cSpec').children[1].firstChild.textContent = 'Uso'; $('cB').textContent = 'Común';
       $('cP').innerHTML = '<small>Acceso</small>Residentes';
-      $('enter').innerHTML = 'Ver terraza <span class="ar">→</span>'; $('tag').textContent = 'TERRAZA · PISCINA';
+      $('enter').innerHTML = `${a.btn} <span class="ar">→</span>`; $('tag').textContent = a.tag;
     } else {
       const f = floors[id - FIRST];
       px(band, X0 - 6, f.y0, X1 + 6, f.y1); band.className = 'band ' + (f.st === 'free' ? '' : f.st);
@@ -761,7 +769,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   function placeCard(){
     const W = innerWidth, H = innerHeight, mob = W < 861;
     let y0, y1, xL, xR;
-    if (sel === 'T') { y0 = TERR.y0; y1 = TERR.y1; xL = TERR.x0; xR = TERR.x1; } else { const f = floors[sel - FIRST]; y0 = f.y0; y1 = f.y1; xL = X0; xR = X1; }
+    if (AM[sel]) { const a = AM[sel]; y0 = a.y0; y1 = a.y1; xL = a.x0; xR = a.x1; } else { const f = floors[sel - FIRST]; y0 = f.y0; y1 = f.y1; xL = X0; xR = X1; }
     const Y = tw.ty + ((y0 + y1) / 2) * tw.s, XR = tw.tx + xR * tw.s, XL = tw.tx + xL * tw.s;
     tag.style.transform = `translate3d(${(XL - tag.offsetWidth - 14).toFixed(1)}px,${(Y - tag.offsetHeight / 2).toFixed(1)}px,0)`;
     if (mob || W < 1200) { wp.setAttribute('d', ''); return; }
@@ -872,10 +880,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   });
 
   function enter(){
-    const terr = sel === 'T';
-    let y0, y1; if (terr) { y0 = TERR.y0; y1 = TERR.y1; } else { const f = floors[sel - FIRST]; y0 = f.y0; y1 = f.y1; }
-    $('where').textContent = terr ? 'Terraza · Amenidades' : `Nivel ${sel} · ${floors[sel - FIRST].unit}`;
-    const ox = tw.tx + ((terr ? (TERR.x0 + TERR.x1) / 2 : (X0 + X1) / 2)) * tw.s, oy = tw.ty + ((y0 + y1) / 2) * tw.s;
+    const terr = !!AM[sel], A = AM[sel];
+    let y0, y1; if (terr) { y0 = A.y0; y1 = A.y1; } else { const f = floors[sel - FIRST]; y0 = f.y0; y1 = f.y1; }
+    $('where').textContent = terr ? (sel === 'R' ? 'Rooftop · Amenidades' : 'Terraza · Amenidades') : `Nivel ${sel} · ${floors[sel - FIRST].unit}`;
+    const ox = tw.tx + ((terr ? (A.x0 + A.x1) / 2 : (X0 + X1) / 2)) * tw.s, oy = tw.ty + ((y0 + y1) / 2) * tw.s;
     zoomer.style.transformOrigin = `${ox}px ${oy}px`;
     const z = zoomer.animate([{ transform: 'scale(1)', filter: 'brightness(1)' }, { transform: 'scale(7)', filter: 'brightness(1.35)' }], { duration: reduce ? 1 : 1250, easing: 'cubic-bezier(.75,0,.2,1)', fill: 'forwards' });
     $('flash').animate([{ opacity: 0 }, { opacity: 0, offset: .55 }, { opacity: .95, offset: .85 }, { opacity: 0 }], { duration: reduce ? 1 : 1800, easing: 'ease-in-out' });
