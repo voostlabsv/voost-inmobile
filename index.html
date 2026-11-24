@@ -538,9 +538,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <div class="rv"><h2>Un VOOST <em>para tu proyecto.</em></h2></div>
     <form id="lead" class="rv d1" novalidate>
       <div class="fl"><input id="fName" name="name" autocomplete="name" placeholder=" " required><label for="fName">Nombre</label></div>
-      <div class="fl"><input id="fCo" name="company" autocomplete="organization" placeholder=" "><label for="fCo">Desarrolladora o inmobiliaria</label></div>
+      <div class="fl"><input id="fCo" name="company" autocomplete="organization" placeholder=" "><label for="fCo">Empresa o proyecto</label></div>
+      <div class="fl"><input id="fInd" name="industry" placeholder=" "><label for="fInd">Industria o tipo de negocio</label></div>
       <div class="fl sel"><select id="fNeed" name="need"><option>Todo el paquete</option><option>Diseño y renders</option><option>Video y animación</option><option>Campañas en Meta Ads</option><option>Landing interactiva</option><option>Agentes de voz y chat 24/7</option></select><label for="fNeed">¿Qué necesitas?</label></div>
-      <div class="fl"><input id="fPh" name="phone" type="tel" autocomplete="tel" placeholder=" "><label for="fPh">WhatsApp</label></div>
+      <div class="fl"><input id="fPh" name="phone" type="tel" autocomplete="tel" placeholder=" "><label for="fPh">WhatsApp o teléfono</label></div>
+      <div class="fl"><input id="fMail" name="email" type="email" autocomplete="email" placeholder=" "><label for="fMail">Correo (opcional)</label></div>
+      <input type="text" name="_honey" id="fHoney" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <button class="pill solid" type="submit">Hablemos de tu lanzamiento <span class="ar">→</span></button>
       <p class="ok" id="ok" hidden></p>
     </form>
@@ -944,11 +947,39 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   }
   bud.addEventListener('input', budget); budget();
 
-  $('lead').addEventListener('submit', e => {
+  /* -------- formulario: cada envío llega como correo "Nuevo lead interesado" --------
+     LEAD_TO: correo que recibe los leads (o el alias que da FormSubmit tras activarlo). */
+  const LEAD_TO = '';
+  let budTouched = false; bud.addEventListener('input', () => budTouched = true, { once: true });
+  $('lead').addEventListener('submit', async e => {
     e.preventDefault();
-    const n = $('fName').value.trim(), ok = $('ok'); ok.hidden = false;
-    if (!n) { ok.style.color = 'var(--glow)'; ok.textContent = 'Escribe tu nombre para continuar.'; $('fName').focus(); return; }
-    ok.style.color = 'var(--free)'; ok.textContent = `Gracias, ${n}. Te escribimos por WhatsApp en breve.`;
+    const ok = $('ok'), btn = e.target.querySelector('button[type=submit]');
+    const v = id => $(id).value.trim();
+    const n = v('fName'), ph = v('fPh'), mail = v('fMail');
+    ok.hidden = false; ok.style.color = 'var(--glow)';
+    if (!n) { ok.textContent = 'Escribe tu nombre para continuar.'; $('fName').focus(); return; }
+    if (!ph && !mail) { ok.textContent = 'Déjanos un WhatsApp o un correo para contactarte.'; $('fPh').focus(); return; }
+    if ($('fHoney').value) return;
+    if (!LEAD_TO) { ok.textContent = 'El formulario se está configurando. Escríbenos por WhatsApp mientras tanto.'; return; }
+    const data = {
+      _subject: `Nuevo lead interesado · ${n}${v('fCo') ? ' · ' + v('fCo') : ''}`,
+      _template: 'table', _captcha: 'false',
+      'Nombre': n, 'Empresa o proyecto': v('fCo') || '—', 'Industria / negocio': v('fInd') || '—',
+      'Necesita': v('fNeed'), 'WhatsApp / teléfono': ph || '—', 'Correo': mail || '—',
+      'Presupuesto Meta Ads indicado': budTouched ? $('budOut').textContent + ' al mes' : 'No indicado',
+      'Página': location.href, 'Fecha': new Date().toLocaleString('es-SV')
+    };
+    if (mail) data._replyto = mail;
+    btn.disabled = true; ok.style.color = 'var(--mute)'; ok.textContent = 'Enviando…';
+    try {
+      const r = await fetch(`https://formsubmit.co/ajax/${LEAD_TO}`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || j.success === 'false' || j.success === false) throw new Error(j.message || r.status);
+      ok.style.color = 'var(--free)'; ok.textContent = `Gracias, ${n}. Recibimos tus datos y te contactamos muy pronto.`;
+      e.target.reset();
+    } catch (err) {
+      ok.style.color = 'var(--glow)'; ok.textContent = 'No pudimos enviar tus datos. Intenta de nuevo en un momento.';
+    } finally { btn.disabled = false; }
   });
 
   frame();
