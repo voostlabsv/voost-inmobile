@@ -949,7 +949,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 
   /* -------- formulario: cada envío llega como correo "Nuevo lead interesado" --------
      LEAD_TO: correo que recibe los leads (o el alias que da FormSubmit tras activarlo). */
-  const LEAD_TO = '';
+  const LEAD_TO = 'voost.lab@gmail.com';
   let budTouched = false; bud.addEventListener('input', () => budTouched = true, { once: true });
   $('lead').addEventListener('submit', async e => {
     e.preventDefault();
