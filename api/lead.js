@@ -1,12 +1,14 @@
 // Recibe los leads del formulario y los envía por correo con Resend.
-// Variables de entorno en Vercel: RESEND_API_KEY y LEAD_EMAIL.
+// Envío por FormSubmit (activo). Si se configura RESEND_API_KEY en Vercel, se usa Resend en su lugar.
+// LEAD_EMAIL en Vercel reemplaza el destino por defecto (también acepta el alias de FormSubmit).
+const DEFAULT_TO = 'voost.lab@gmail.com';
+const SITE = 'https://voost-inmobile.vercel.app/';
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const clip = (s, n = 300) => String(s ?? '').trim().slice(0, n);
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ ok: false, error: 'method' }); }
-  const key = process.env.RESEND_API_KEY, to = process.env.LEAD_EMAIL;
-  if (!key || !to) return res.status(503).json({ ok: false, error: 'not_configured' });
+  const key = process.env.RESEND_API_KEY, to = process.env.LEAD_EMAIL || DEFAULT_TO;
 
   let b = req.body;
   if (typeof b === 'string') { try { b = JSON.parse(b); } catch { b = {}; } }
@@ -25,13 +27,27 @@ module.exports = async (req, res) => {
   const html = `<div style="font-family:Arial,sans-serif;max-width:560px"><h2 style="margin:0 0 4px">Nuevo lead interesado</h2><p style="margin:0 0 16px;color:#666">VOOST Inmobile · formulario de la landing</p><table style="border-collapse:collapse;width:100%">${rows}</table></div>`;
   const text = Object.entries(lead).map(([k, v]) => `${k}: ${v || '—'}`).join('\n');
 
+  const subject = `Nuevo lead interesado · ${lead['Nombre']}${lead['Empresa o proyecto'] ? ' · ' + lead['Empresa o proyecto'] : ''}`;
+  if (!key) {
+    try {
+      const body = { _subject: subject, _template: 'table', _captcha: 'false', ...Object.fromEntries(Object.entries(lead).map(([k, v]) => [k, v || '—'])) };
+      if (replyTo) body._replyto = replyTo;
+      const r = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(to)}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json', Origin: SITE.slice(0, -1), Referer: SITE },
+        body: JSON.stringify(body)
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || String(j.success) !== 'true') { console.error('formsubmit', r.status, j); return res.status(502).json({ ok: false, error: 'send_failed' }); }
+      return res.status(200).json({ ok: true });
+    } catch (e) { console.error('formsubmit', e); return res.status(502).json({ ok: false, error: 'send_failed' }); }
+  }
   try {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: process.env.LEAD_FROM || 'VOOST Inmobile <onboarding@resend.dev>',
-        to: [to], subject: `Nuevo lead interesado · ${lead['Nombre']}${lead['Empresa o proyecto'] ? ' · ' + lead['Empresa o proyecto'] : ''}`,
+        to: [to], subject,
         html, text, ...(replyTo ? { reply_to: replyTo } : {})
       })
     });
