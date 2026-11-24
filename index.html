@@ -163,6 +163,11 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .legend{display:flex;gap:16px;flex-wrap:wrap;pointer-events:auto}
 .legend span{display:flex;align-items:center;gap:8px;font-family:var(--m);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .legend i{width:7px;height:7px;border-radius:50%}
+@media (min-width:861px) and (max-width:1199px){
+  .card{left:auto!important;right:var(--gr);top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 28px);transform:none!important;width:310px}
+  #wire{display:none}
+  .beat.tw p{display:none}
+}
 @media (max-width:860px){
   .card{left:var(--gl)!important;right:var(--gr);top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);width:auto;padding:16px 18px;gap:12px;border-radius:16px;transform:none!important}
   .card .num{font-size:3rem}
@@ -665,6 +670,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 
   function towerFit(){
     const W = innerWidth, H = innerHeight, mob = W < 861;
+    if (!mob && W < 1200) { const s = Math.min((H * .66) / TOWER_H, (W * .55) / TOWER_W); return { s, tx: W * .5 - TOWER_CX * s, ty: H * .47 - TOWER_CY * s }; }
     const s = mob ? Math.min((H * .62) / TOWER_H, (W * .98) / TOWER_W) : Math.min((H * .84) / TOWER_H, (W * .5) / TOWER_W);
     const cx = mob ? W * .5 : W * .54, cy = mob ? H * .47 : H * .54;
     return { s, tx: cx - TOWER_CX * s, ty: cy - TOWER_CY * s };
@@ -692,7 +698,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     if (sel === 'T') { y0 = TERR.y0; y1 = TERR.y1; xL = TERR.x0; xR = TERR.x1; } else { const f = floors[sel - FIRST]; y0 = f.y0; y1 = f.y1; xL = X0; xR = X1; }
     const Y = tw.ty + ((y0 + y1) / 2) * tw.s, XR = tw.tx + xR * tw.s, XL = tw.tx + xL * tw.s;
     tag.style.transform = `translate3d(${(XL - tag.offsetWidth - 14).toFixed(1)}px,${(Y - tag.offsetHeight / 2).toFixed(1)}px,0)`;
-    if (mob) { wp.setAttribute('d', ''); return; }
+    if (mob || W < 1200) { wp.setAttribute('d', ''); return; }
     const ch = card.offsetHeight, cx = Math.min(W - card.offsetWidth - 110, XR + 90);
     const cy = clamp(Y - ch * .42, 90, H - ch - 40);
     card.style.transform = `translate3d(${cx.toFixed(1)}px,${cy.toFixed(1)}px,0)`;
