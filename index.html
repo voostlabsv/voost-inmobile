@@ -947,7 +947,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   }
   bud.addEventListener('input', budget); budget();
 
-  /* -------- formulario: cada envío llega como correo "Nuevo lead interesado" (función /api/lead) -------- */
+  /* -------- formulario: cada envío llega como correo "Nuevo lead interesado" vía FormSubmit --------
+     LEAD_TO: correo activado en FormSubmit (o el alias aleatorio que FormSubmit entrega para ocultarlo). */
+  const LEAD_TO = 'voost.lab@gmail.com';
   let budTouched = false; bud.addEventListener('input', () => budTouched = true, { once: true });
   $('lead').addEventListener('submit', async e => {
     e.preventDefault();
@@ -962,9 +964,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       date: new Date().toLocaleString('es-SV', { timeZone: 'America/El_Salvador' }), _honey: $('fHoney').value };
     btn.disabled = true; ok.style.color = 'var(--mute)'; ok.textContent = 'Enviando…';
     try {
-      const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      if (data._honey) return;
+      const payload = { _subject: `Nuevo lead interesado · ${n}${data.company ? ' · ' + data.company : ''}`, _template: 'table', _captcha: 'false',
+        'Nombre': n, 'Empresa o proyecto': data.company || '—', 'Industria / negocio': data.industry || '—', 'Necesita': data.need,
+        'WhatsApp / teléfono': ph || '—', 'Correo': mail || '—', 'Presupuesto Meta Ads': data.budget, 'Página': data.page, 'Fecha': data.date };
+      if (mail) payload._replyto = mail;
+      const r = await fetch(`https://formsubmit.co/ajax/${LEAD_TO}`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) });
       const j = await r.json().catch(() => ({}));
-      if (!r.ok || !j.ok) throw new Error(j.error || r.status);
+      if (!r.ok || String(j.success) !== 'true') throw new Error(j.message || r.status);
       ok.style.color = 'var(--free)'; ok.textContent = `Gracias, ${n}. Recibimos tus datos y te contactamos muy pronto.`;
       e.target.reset();
     } catch (err) {
