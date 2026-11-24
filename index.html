@@ -80,6 +80,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .beat h1{font-size:clamp(2.8rem,6.6vw,6.4rem)}
 .beat h1 em,.beat h2 em{font-style:normal;font-weight:500}
 .beat p{margin:0;max-width:40ch;color:rgba(241,236,228,.78);font-size:clamp(1rem,1.25vw,1.12rem);font-weight:300}
+.beat .svl{display:flex;flex-wrap:wrap;gap:8px}
+.beat .svl span{padding:9px 16px;border-radius:999px;border:1px solid rgba(241,236,228,.28);background:rgba(10,13,22,.28);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:.9rem}
 .beat .row{display:flex;gap:10px;flex-wrap:wrap;pointer-events:auto}
 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
 .w>span{display:inline-block;transform:translateY(105%);transition:transform 1.1s var(--ease)}
@@ -346,7 +348,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 <header class="top" id="top">
   <a class="brand" href="#story" aria-label="VOOST Inmobile, inicio"><span class="bw">VOOST</span><span class="bar"></span><span class="s">Inmobile</span></a>
   <nav class="nav">
-    <a href="#" data-jump="6">La torre</a>
+    <a href="#" data-jump="3">La torre</a>
     <a href="#servicios">Servicios</a>
     <a href="#meta">Meta Ads</a>
     <a href="#agentes">Agentes 24/7</a>
@@ -360,9 +362,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <!-- escenas de video -->
     <div class="scene" data-v="calle"><div class="cam"><video muted playsinline loop preload="auto" poster="assets/p/calle.webp"></video></div><div class="shade"></div></div>
     <div class="scene" data-v="piscina"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/piscina.webp"></video></div><div class="shade"></div></div>
-    <div class="scene" data-v="ciudad"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/ciudad.webp"></video></div><div class="shade"></div></div>
-    <div class="scene" data-v="sala"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/sala.webp"></video></div><div class="shade"></div></div>
-    <div class="scene" data-v="fachada"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/fachada.webp"></video></div><div class="shade"></div></div>
     <div class="scene" data-v="noche-rev" data-once="1"><div class="cam"><video muted playsinline preload="none" poster="assets/p/noche-rev.webp"></video></div><div class="shade"></div></div>
     <!-- torre interactiva -->
     <div class="scene tower-scene" id="towerScene">
@@ -402,35 +401,19 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       <div class="beat on" data-s="0">
         <h1 data-split>Proyectos que se venden <em>antes de existir.</em></h1>
         <p class="fade">Render, diseño, campañas en Meta Ads y agentes 24/7 para llenar la agenda de tu equipo con prospectos calificados.</p>
-        <div class="row fade"><button class="pill solid" type="button" data-jump="6">Explorar la torre <span class="ar">→</span></button><a class="pill" href="#contacto">Agendar llamada</a></div>
+        <div class="row fade"><button class="pill solid" type="button" data-jump="3">Explorar la torre <span class="ar">→</span></button><a class="pill" href="#contacto">Agendar llamada</a></div>
       </div>
       <div class="beat" data-s="1">
-        <span class="lab">01 · Render y diseño</span>
-        <h2 data-split>Te hacemos el render <em>y el diseño.</em></h2>
-        <p class="fade">Amenidades, interiores, video aéreo y piezas de venta con calidad de lanzamiento, antes de poner el primer bloque.</p>
+        <span class="lab">Lo que hacemos</span>
+        <h2 data-split>Del render a la cita, <em>en un solo equipo.</em></h2>
+        <div class="fade svl"><span>Render y diseño</span><span>Meta Ads a tu presupuesto</span><span>Leads calificados</span><span>Agentes 24/7</span></div>
       </div>
       <div class="beat" data-s="2">
-        <span class="lab">02 · Campañas en Meta Ads</span>
-        <h2 data-split>Lanzamos tu campaña <em>en Meta Ads.</em></h2>
-        <p class="fade">Gestión completa de Meta Ads que se adapta a tu presupuesto: creatividades, segmentación y optimización por costo por lead.</p>
+        <span class="lab">Landing interactiva</span>
+        <h2 data-split>Ahora, <em>entra a la torre.</em></h2>
       </div>
-      <div class="beat" data-s="3">
-        <span class="lab">03 · Recorridos</span>
-        <h2 data-split>Recorridos que convierten <em>visitas en citas.</em></h2>
-        <p class="fade">Video y tours interactivos que llevan al comprador de la calle a la sala, desde su teléfono.</p>
-      </div>
-      <div class="beat" data-s="4">
-        <span class="lab">04 · Leads calificados</span>
-        <h2 data-split>Más prospectos <em>calificados.</em></h2>
-        <p class="fade">Cada lead llega filtrado por presupuesto, tipología y plazo. Tu equipo solo habla con quien puede comprar.</p>
-      </div>
-      <div class="beat" data-s="5">
-        <span class="lab">05 · Agentes 24/7</span>
-        <h2 data-split>Cero leads <em>sin respuesta.</em></h2>
-        <p class="fade">Agentes de voz y chat que responden en segundos, califican y agendan visitas en tu calendario. 24/7.</p>
-      </div>
-      <div class="beat tw" data-s="6">
-        <span class="lab">06 · Landing interactiva</span>
+      <div class="beat tw" data-s="3">
+        <span class="lab">Torre demo</span>
         <h2 data-split>Explora <em>la torre.</em></h2>
         <p class="fade">Recorre cada nivel. Toca uno para entrar. La terraza y el rooftop también se visitan.</p>
         <div class="legend fade"><span><i style="background:var(--free)"></i>Disponible</span><span><i style="background:var(--hold)"></i>Reservado</span><span><i style="background:var(--gone)"></i>Vendido</span><span><i style="background:var(--aqua)"></i>Terraza</span></div>
@@ -439,12 +422,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 
     <nav class="chap" id="chap" aria-label="Capítulos">
       <button type="button" data-jump="0"><span>Inicio</span><i></i></button>
-      <button type="button" data-jump="1"><span>Render</span><i></i></button>
-      <button type="button" data-jump="2"><span>Meta Ads</span><i></i></button>
-      <button type="button" data-jump="3"><span>Recorridos</span><i></i></button>
-      <button type="button" data-jump="4"><span>Leads</span><i></i></button>
-      <button type="button" data-jump="5"><span>Agentes</span><i></i></button>
-      <button type="button" data-jump="6"><span>La torre</span><i></i></button>
+      <button type="button" data-jump="1"><span>Servicios</span><i></i></button>
+      <button type="button" data-jump="3"><span>La torre</span><i></i></button>
     </nav>
     <div class="cue lab" id="cue"><i></i>Scroll</div>
     <div class="prog" aria-hidden="true"><i id="prog"></i></div>
@@ -592,7 +571,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   const scenes = [...vp.querySelectorAll('.scene')];
   const beats = [...vp.querySelectorAll('.beat')];
   const chapBtns = [...document.querySelectorAll('#chap button')];
-  const SEG = [150, 150, 150, 150, 150, 160, 300];      // vh por escena; la última es la torre
+  const SEG = [120, 140, 110, 300];      // vh por escena; la última es la torre
   const TR = 0.4;                                         // porción del tramo usada para la transición
   const starts = []; { let a = 0; SEG.forEach(s => { starts.push(a); a += s; }); }
   const TOTAL = starts[starts.length - 1] + SEG[SEG.length - 1];
@@ -644,21 +623,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     // precargar la escena siguiente
     if (vids[act + 1]) ensure(act + 1);
     // el video de la noche corre en reversa hasta coincidir con la foto de la torre
-    if (act === 5 && active !== 5 && vids[5]) { try { vids[5].currentTime = 0; } catch (_) {} vids[5].play().catch(() => {}); }
+    if (act === 2 && active !== 2 && vids[2]) { try { vids[2].currentTime = 0; } catch (_) {} vids[2].playbackRate = 1.6; vids[2].play().catch(() => {}); }
 
     if (act !== active) { active = act; }
     beats.forEach((b, k) => {
       const k2 = +b.dataset.s;
       let on = k2 === act && e[k2] > .82 && !(e[k2 + 1] > .08);
-      if (k2 === 6) on = act === 6 && towerT() > .3;
+      if (k2 === 3) on = act === 3 && towerT() > .3;
       if (k2 === 0) on = act === 0 && !(e[1] > .08);
       b.classList.toggle('on', on);
     });
     chapBtns.forEach((b, k) => b.classList.toggle('on', k === act));
-    vp.classList.toggle('intower', act === 6 && towerT() > .3);
+    vp.classList.toggle('intower', act === 3 && towerT() > .3);
     layoutTower(yv);
   }
-  function towerT(){ const vh = innerHeight / 100, yv = clamp(-story.getBoundingClientRect().top, 0, TOTAL * vh) / vh; return clamp((yv - starts[6]) / SEG[6]); }
+  function towerT(){ const vh = innerHeight / 100, yv = clamp(-story.getBoundingClientRect().top, 0, TOTAL * vh) / vh; return clamp((yv - starts[3]) / SEG[3]); }
   function onScroll(){ if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', () => { frame(); });
@@ -666,7 +645,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', ev => {
     ev.preventDefault();
     const k = +b.dataset.jump, vh = innerHeight / 100;
-    const target = story.offsetTop + (k === 6 ? starts[6] + SEG[6] * .5 : k === 0 ? 0 : starts[k] + 4) * vh;
+    const target = story.offsetTop + (k === 3 ? starts[3] + SEG[3] * .5 : k === 0 ? 0 : starts[k] + 4) * vh;
     scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' });
   }));
 
@@ -757,7 +736,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     return { s, tx: (W - IW * s) / 2, ty: (H - IH * s) * .5 };
   }
   function layoutTower(yv){
-    const t = clamp((yv - starts[6]) / SEG[6]);
+    const t = clamp((yv - starts[3]) / SEG[3]);
     const a = ease(clamp(t / .38));
     const c = towerCover(), f = towerFit();
     // el edificio "baja" a su lugar: la cámara se aleja mientras la torre desciende
