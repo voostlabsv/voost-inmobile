@@ -229,6 +229,47 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .sv:hover .th video{transform:scale(1)}
 @media (max-width:960px){.sv{grid-template-columns:minmax(0,1fr) 120px;gap:14px 20px;padding:28px 0}.sv .ix{grid-column:1/-1}.sv .th{grid-column:2;grid-row:2/4;width:120px;align-self:start;aspect-ratio:3/4}.sv h3,.sv p{grid-column:1}}
 
+/* meta ads */
+.budget{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:56px;align-items:start}
+.bl{display:flex;flex-direction:column;gap:14px;min-width:0}
+.bl output{font-weight:200;font-size:clamp(3.4rem,6vw,5.6rem);letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.bl .small{font-size:.85rem;margin:6px 0 0;font-weight:300}
+.scale{display:flex;justify-content:space-between}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:linear-gradient(90deg,var(--glow) var(--p,20%),var(--hair) var(--p,20%))}
+input[type=range]::-moz-range-track{height:2px;background:var(--hair)}
+input[type=range]::-moz-range-progress{height:2px;background:var(--glow)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-10px;border-radius:50%;background:var(--paper);box-shadow:0 0 0 6px rgba(244,197,138,.25);transition:box-shadow .3s}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border:0;border-radius:50%;background:var(--paper);box-shadow:0 0 0 6px rgba(244,197,138,.25)}
+input[type=range]:active::-webkit-slider-thumb{box-shadow:0 0 0 10px rgba(244,197,138,.3)}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.plan{padding:22px;border-radius:18px;border:1px solid var(--hair);display:flex;flex-direction:column;gap:12px;opacity:.45;transform:scale(.98);transition:opacity .5s,transform .6s var(--ease),border-color .5s,background .5s;min-width:0}
+.plan.on{opacity:1;transform:none;border-color:rgba(244,197,138,.55);background:rgba(244,197,138,.06)}
+.plan .lab{color:var(--glow)}
+.plan h3{margin:0;font-weight:300;font-size:1.3rem;letter-spacing:-.01em}
+.plan ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;color:var(--mute);font-size:.9rem;font-weight:300}
+.plan li{padding-left:16px;position:relative}
+.plan li::before{content:"";position:absolute;left:0;top:.7em;width:6px;height:1px;background:var(--glow)}
+.mchips{list-style:none;margin:56px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.mchips li{padding:10px 16px;border-radius:999px;border:1px solid var(--hair);font-size:.85rem;color:var(--mute)}
+@media (max-width:960px){.budget{grid-template-columns:1fr;gap:32px}.plans{grid-template-columns:1fr}.plan{opacity:.55}}
+
+/* terraza explorable */
+.room.terr .frame{position:absolute;left:0;top:0;transform-origin:0 0;transition:transform 1.8s var(--ease)}
+.room.terr .frame video{transform:none!important;transition:none}
+.pin{position:absolute;z-index:3;display:flex;align-items:center;gap:10px;transform:translate(-7px,-50%) scale(var(--inv,1));transform-origin:7px 50%;transition:transform 1.8s var(--ease)}
+.pin .d{width:14px;height:14px;border-radius:50%;background:var(--paper);box-shadow:0 0 0 0 rgba(255,255,255,.5);animation:ping2 2.2s infinite;flex:none}
+@keyframes ping2{0%{box-shadow:0 0 0 0 rgba(255,255,255,.55)}80%,100%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}
+.pin .l{padding:7px 12px;border-radius:999px;background:rgba(10,13,22,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(241,236,228,.2);font-family:var(--m);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;opacity:.85;transition:background .3s,color .3s}
+.pin:hover .l,.pin.on .l{background:var(--paper);color:var(--ink);opacity:1}
+.pin.on .d{background:var(--glow)}
+.room.terr .txt h3,.room.terr .txt p{transition:opacity .4s}
+.room.terr .txt.swap h3,.room.terr .txt.swap p{opacity:0}
+.tchips{display:flex;flex-wrap:wrap;gap:8px}
+.tchips button{padding:8px 14px;border-radius:999px;border:1px solid var(--hair);font-size:.8rem;background:rgba(10,13,22,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background .3s,color .3s}
+.tchips button.on,.tchips button:hover{background:var(--paper);color:var(--ink)}
+@media (max-width:860px){.pin .l{display:none}}
+
 /* agentes */
 #agentes{background:var(--ink-2)}
 .ag{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:center}
@@ -307,6 +348,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   <nav class="nav">
     <a href="#" data-jump="6">La torre</a>
     <a href="#servicios">Servicios</a>
+    <a href="#meta">Meta Ads</a>
     <a href="#agentes">Agentes 24/7</a>
     <a class="pill" href="#contacto">Agendar llamada <span class="ar">→</span></a>
   </nav>
@@ -317,10 +359,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   <div class="vp" id="vp">
     <!-- escenas de video -->
     <div class="scene" data-v="calle"><div class="cam"><video muted playsinline loop preload="auto" poster="assets/p/calle.webp"></video></div><div class="shade"></div></div>
-    <div class="scene" data-v="ciudad"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/ciudad.webp"></video></div><div class="shade"></div></div>
-    <div class="scene" data-v="fachada"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/fachada.webp"></video></div><div class="shade"></div></div>
-    <div class="scene" data-v="sala"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/sala.webp"></video></div><div class="shade"></div></div>
     <div class="scene" data-v="piscina"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/piscina.webp"></video></div><div class="shade"></div></div>
+    <div class="scene" data-v="ciudad"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/ciudad.webp"></video></div><div class="shade"></div></div>
+    <div class="scene" data-v="sala"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/sala.webp"></video></div><div class="shade"></div></div>
+    <div class="scene" data-v="fachada"><div class="cam"><video muted playsinline loop preload="none" poster="assets/p/fachada.webp"></video></div><div class="shade"></div></div>
     <div class="scene" data-v="noche-rev" data-once="1"><div class="cam"><video muted playsinline preload="none" poster="assets/p/noche-rev.webp"></video></div><div class="shade"></div></div>
     <!-- torre interactiva -->
     <div class="scene tower-scene" id="towerScene">
@@ -358,7 +400,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 
     <div class="beats">
       <div class="beat on" data-s="0">
-        <span class="lab">VOOST — Inmobile</span>
         <h1 data-split>Proyectos que se venden <em>antes de existir.</em></h1>
         <p class="fade">Render, diseño, campañas en Meta Ads y agentes 24/7 para llenar la agenda de tu equipo con prospectos calificados.</p>
         <div class="row fade"><button class="pill solid" type="button" data-jump="6">Explorar la torre <span class="ar">→</span></button><a class="pill" href="#contacto">Agendar llamada</a></div>
@@ -366,12 +407,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       <div class="beat" data-s="1">
         <span class="lab">01 · Render y diseño</span>
         <h2 data-split>Te hacemos el render <em>y el diseño.</em></h2>
-        <p class="fade">Fachadas, interiores, video aéreo y piezas de venta listas antes de poner el primer bloque.</p>
+        <p class="fade">Amenidades, interiores, video aéreo y piezas de venta con calidad de lanzamiento, antes de poner el primer bloque.</p>
       </div>
       <div class="beat" data-s="2">
         <span class="lab">02 · Campañas en Meta Ads</span>
         <h2 data-split>Lanzamos tu campaña <em>en Meta Ads.</em></h2>
-        <p class="fade">Creatividades, segmentación y optimización por costo por lead. Tu proyecto frente a compradores reales, no curiosos.</p>
+        <p class="fade">Gestión completa de Meta Ads que se adapta a tu presupuesto: creatividades, segmentación y optimización por costo por lead.</p>
       </div>
       <div class="beat" data-s="3">
         <span class="lab">03 · Recorridos</span>
@@ -427,6 +468,30 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   </div>
 </section>
 
+<section id="meta" class="sec">
+  <div class="wrap meta">
+    <div class="head">
+      <div class="rv"><span class="lab">Gestión de Meta Ads</span><h2>Tu campaña en Meta Ads, <em>a la medida de tu presupuesto.</em></h2></div>
+      <p class="rv d1">Tú decides cuánto invertir en pauta. Nosotros armamos la estrategia, producimos las creatividades con tus renders y videos, y optimizamos cada semana para que cada dólar traiga prospectos calificados.</p>
+    </div>
+    <div class="budget rv">
+      <div class="bl">
+        <label class="lab mute" for="bud">Inversión mensual en pauta</label>
+        <output id="budOut" for="bud">$1,500</output>
+        <input id="bud" type="range" min="300" max="10000" step="100" value="1500" aria-describedby="budPlan">
+        <div class="scale lab mute"><span>$300</span><span>$10,000+</span></div>
+        <p class="mute small">Ejemplo de referencia. Armamos la propuesta exacta según tu proyecto y tu meta de prospectos.</p>
+      </div>
+      <div class="plans" id="budPlan">
+        <article class="plan" data-max="800"><span class="lab">Arranque</span><h3>Primeros leads, rápido</h3><ul><li>1 campaña de captación</li><li>4 creatividades al mes</li><li>Formulario instantáneo y WhatsApp</li><li>Reporte mensual</li></ul></article>
+        <article class="plan" data-max="3000"><span class="lab">Crecimiento</span><h3>Más volumen, mejor filtro</h3><ul><li>Captación y remarketing</li><li>8 creatividades al mes con renders y video</li><li>Pruebas A/B de anuncios y audiencias</li><li>Reporte quincenal</li></ul></article>
+        <article class="plan" data-max="99999"><span class="lab">Lanzamiento</span><h3>Embudo completo</h3><ul><li>Alcance, captación y remarketing</li><li>12+ creatividades al mes</li><li>Leads directo a agentes 24/7 y CRM</li><li>Reporte semanal</li></ul></article>
+      </div>
+    </div>
+    <ul class="mchips rv"><li>Estrategia y segmentación</li><li>Creatividades con tu proyecto</li><li>Optimización por costo por lead</li><li>Formularios conectados a tu CRM</li><li>Reportes claros</li></ul>
+  </div>
+</section>
+
 <section id="agentes" class="sec">
   <div class="wrap ag">
     <div>
@@ -461,7 +526,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <ol class="steps" id="steps">
       <li class="rv"><span class="lab">Brief</span><h3>Entendemos el proyecto</h3><p>Planos, renders, inventario, precios y comprador ideal.</p></li>
       <li class="rv d1"><span class="lab">Producción</span><h3>Creamos el contenido</h3><p>Diseño, video y animación: de la fachada al interior.</p></li>
-      <li class="rv d2"><span class="lab">Lanzamiento</span><h3>Publicamos la experiencia</h3><p>Landing interactiva con selector de pisos y formularios conectados.</p></li>
+      <li class="rv d2"><span class="lab">Lanzamiento</span><h3>Publicamos la experiencia</h3><p>Landing interactiva y campañas en Meta Ads según tu presupuesto.</p></li>
       <li class="rv d3"><span class="lab">Conversión</span><h3>Activamos los agentes</h3><p>Voz y chat 24/7 que califican y agendan visitas.</p></li>
     </ol>
   </div>
@@ -470,7 +535,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 <section id="contacto">
   <video muted loop playsinline preload="none" poster="assets/p/noche.webp" data-src="noche" aria-hidden="true"></video>
   <div class="ct">
-    <div class="rv"><span class="lab">VOOST — Inmobile</span><h2>Un VOOST <em>para tu proyecto.</em></h2></div>
+    <div class="rv"><h2>Un VOOST <em>para tu proyecto.</em></h2></div>
     <form id="lead" class="rv d1" novalidate>
       <div class="fl"><input id="fName" name="name" autocomplete="name" placeholder=" " required><label for="fName">Nombre</label></div>
       <div class="fl"><input id="fCo" name="company" autocomplete="organization" placeholder=" "><label for="fCo">Desarrolladora o inmobiliaria</label></div>
@@ -718,17 +783,65 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   const ROOMS = [
     { v: 'sala', t: 'Sala con vista al volcán', p: 'Ventanal de piso a techo, luz de tarde y el volcán como cuadro principal de la casa.' },
     { v: 'fachada', t: 'Balcón', p: 'Barandal de vidrio, jardinera integrada y la ciudad a tus pies.' },
-    { v: 'piscina', t: 'Terraza y piscina', p: 'Amenidad del edificio: piscina, solárium y vista abierta a las montañas.', cta: true }
+    { v: 'piscina', terr: true, t: 'Terraza con vista al volcán', p: 'La amenidad del edificio mira de frente al volcán. Toca cada punto para recorrerla.', cta: true }
+  ];
+  // puntos de interés de la terraza, en coordenadas del video (1080 × 1920)
+  const VW = 1080, VH = 1920;
+  const SPOTS = [
+    { k: 'vista', n: 'Vista al volcán', x: 290, y: 800, z: 1.65, t: 'Vista al volcán', p: 'El volcán de frente desde la terraza. Atardeceres sin obstáculos, todos los días.' },
+    { k: 'sol', n: 'Solárium', x: 190, y: 1120, z: 1.7, t: 'Solárium', p: 'Camastros y sombrillas al borde del agua, con la ciudad abajo y la montaña al fondo.' },
+    { k: 'lounge', n: 'Lounge', x: 840, y: 1040, z: 1.8, t: 'Lounge techado', p: 'Sala, comedor y bar bajo techo para reuniones y eventos de residentes.' },
+    { k: 'pool', n: 'Piscina', x: 560, y: 1450, z: 1.5, t: 'Piscina de borde largo', p: 'Agua turquesa, piso de piedra cálida e iluminación para usarla también de noche.' }
   ];
   const tour = $('tour'), roomsEl = $('rooms'), segs = $('segs');
   ROOMS.forEach((r, i) => {
-    const el = document.createElement('section'); el.className = 'room';
+    const el = document.createElement('section'); el.className = 'room' + (r.terr ? ' terr' : '');
+    if (r.terr) {
+      el.innerHTML = `<div class="frame"><video muted loop playsinline preload="none" poster="assets/p/${r.v}.webp" data-v="${r.v}"></video>
+        ${SPOTS.map(sp => `<button type="button" class="pin" data-k="${sp.k}" style="left:${sp.x / VW * 100}%;top:${sp.y / VH * 100}%"><span class="d"></span><span class="l">${sp.n}</span></button>`).join('')}</div>
+        <div class="txt"><span class="lab" style="color:var(--glow)">Terraza · Amenidades</span><h3>${r.t}</h3><p>${r.p}</p>
+        <div class="tchips">${SPOTS.map(sp => `<button type="button" data-k="${sp.k}">${sp.n}</button>`).join('')}<button type="button" data-k="all">Vista general</button></div>
+        <div><a class="pill solid" href="#contacto" data-close>Quiero esto para mi proyecto <span class="ar">→</span></a></div></div>`;
+      roomsEl.appendChild(el); segs.appendChild(document.createElement('i'));
+      return;
+    }
     el.innerHTML = `<video muted loop playsinline preload="none" poster="assets/p/${r.v}.webp" data-v="${r.v}"></video>
       <div class="txt"><span class="lab" style="color:var(--glow)">Recorrido guiado · ${String(i + 1).padStart(2, '0')}</span><h3>${r.t}</h3><p>${r.p}</p>
       ${r.cta ? '<div><a class="pill solid" href="#contacto" data-close>Quiero esto para mi proyecto <span class="ar">→</span></a></div>' : '<span class="lab mute">Desliza para continuar</span>'}</div>`;
     roomsEl.appendChild(el); segs.appendChild(document.createElement('i'));
   });
   const rEls = [...roomsEl.children], sEls = [...segs.children];
+  // cámara de la terraza
+  const tRoom = roomsEl.querySelector('.room.terr'), tFrame = tRoom.querySelector('.frame'), tTxt = tRoom.querySelector('.txt');
+  let tCur = 'all';
+  function terrCam(k, instant){
+    const W = innerWidth, H = innerHeight, mob = W < 861;
+    const base = Math.max(W / VW, H / VH), fw = VW * base, fh = VH * base;
+    const sp = SPOTS.find(x => x.k === k);
+    const z = sp ? sp.z : 1;
+    const px = (sp ? sp.x : VW * .5) * base, py = (sp ? sp.y : VH * .47) * base;
+    const tx = mob ? W * .5 : W * .62, ty = mob ? H * .38 : H * .45;
+    let dx = tx - px * z, dy = ty - py * z;
+    dx = clamp(dx, W - fw * z, 0); dy = clamp(dy, H - fh * z, 0);
+    tFrame.style.width = fw + 'px'; tFrame.style.height = fh + 'px';
+    if (instant) { tFrame.style.transition = 'none'; void tFrame.offsetWidth; }
+    tFrame.style.transform = `translate3d(${dx}px,${dy}px,0) scale(${z})`;
+    tFrame.style.setProperty('--inv', (1 / z).toFixed(4));
+    if (instant) { void tFrame.offsetWidth; tFrame.style.transition = ''; }
+    tRoom.querySelectorAll('[data-k]').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+    if (k !== tCur) {
+      tCur = k;
+      tTxt.classList.add('swap');
+      setTimeout(() => {
+        tTxt.querySelector('h3').textContent = sp ? sp.t : ROOMS[2].t;
+        tTxt.querySelector('p').textContent = sp ? sp.p : ROOMS[2].p;
+        tTxt.classList.remove('swap');
+      }, 350);
+    }
+  }
+  tRoom.addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b) terrCam(b.dataset.k); });
+  addEventListener('resize', () => terrCam(tCur, true));
+  terrCam('all', true);
   let ri = -1, lock = false, holdT;
   function go(i){
     if (i < 0 || i >= ROOMS.length || i === ri) return;
@@ -739,6 +852,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       if (k === i || k === i + 1) { if (!v.dataset.set) { v.src = vsrc(v.dataset.v); v.dataset.set = 1; } }
       if (k === i) { try { v.currentTime = 0; } catch (_) {} v.play().catch(() => {}); } else setTimeout(() => { if (ri !== k) v.pause(); }, 1300);
     });
+    if (rEls[i] === tRoom) { tCur = ''; terrCam('vista', true); tFrame.style.transform += ''; setTimeout(() => terrCam('all'), 60); setTimeout(() => { if (ri === i && tCur === 'all') terrCam('vista'); }, 2600); }
     clearTimeout(holdT); holdT = setTimeout(() => rEls[i].classList.add('hold'), reduce ? 0 : 950);
     sEls.forEach((s, k) => s.classList.toggle('done', k <= i));
     $('count').textContent = `${String(i + 1).padStart(2, '0')} / ${String(ROOMS.length).padStart(2, '0')}`;
@@ -812,6 +926,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     setTimeout(() => booked.classList.add('show'), d + 200);
   }), { threshold: .35 });
   chatIO.observe($('chat'));
+
+  const bud = $('bud'), budOut = $('budOut'), plans = [...document.querySelectorAll('.plan')];
+  function budget(){
+    const v = +bud.value; budOut.textContent = '$' + v.toLocaleString('en-US') + (v >= 10000 ? '+' : '');
+    bud.style.setProperty('--p', ((v - bud.min) / (bud.max - bud.min) * 100) + '%');
+    const on = plans.find(p => v < +p.dataset.max) || plans[plans.length - 1];
+    plans.forEach(p => p.classList.toggle('on', p === on));
+  }
+  bud.addEventListener('input', budget); budget();
 
   $('lead').addEventListener('submit', e => {
     e.preventDefault();
